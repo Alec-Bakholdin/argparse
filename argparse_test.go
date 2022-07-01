@@ -1986,7 +1986,7 @@ func TestFlagDefaultValuePass(t *testing.T) {
 
 	p := NewParser("progname", "Prog description")
 
-	f := p.Flag("f", "flag", &Options{Default: true})
+	f := p.Flag("f", "flag", &Options{Default: false})
 
 	err := p.Parse(testArgs)
 
@@ -1995,9 +1995,29 @@ func TestFlagDefaultValuePass(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	// Should fail if not true
-	if *f != true {
-		t.Errorf("expected [true], got [%t]", *f)
+	// Should fail if not false
+	if *f != false {
+		t.Errorf("expected [false], got [%t]", *f)
+	}
+}
+
+func TestFlagDefaultValueIgnoreTrue(t *testing.T) {
+	testArgs := []string{"progname"}
+
+	p := NewParser("progname", "Prog description")
+
+	f := p.Flag("t", "true", &Options{Default: true})
+
+	err := p.Parse(testArgs)
+
+	// Should fail on failure
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	// Should fail if not false
+	if *f != false {
+		t.Errorf("expected [false], got [%t]", *f)
 	}
 }
 
